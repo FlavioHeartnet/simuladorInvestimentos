@@ -42,7 +42,7 @@
   }
  
 </script>
-
+<div class="min-h-screen w-full md:h-full md:flex md:items-center md:place-content-center">
 <div class="container p-4">
     <div transition:fly={{
         delay: 300,
@@ -57,7 +57,7 @@
     <p transition:fly={{
         delay: 500,
         duration: 2000
-    }}>Faça projeções sobre quanto seu dinheiro ira render, calculo de impostos e taxas de corretagens</p>
+    }}>Faça projeções sobre quanto seu dinheiro irá render, calculo de impostos e taxas de corretagens</p>
     <br/>
     <form transition:fly={{
         delay: 600,
@@ -96,31 +96,35 @@
         duration: 300
     }}>
         <div class="flex flex-wrap mt-5">
-            <div class="flex-auto">
-                <p>Montante:</p>
-                <p>{result.montante}</p>
+            <div class="flex-auto w-full mt-5 md:w-24">
+                <p class="text-xl">Montante total final:</p>
+                <p class="text-3xl text-green-400 font-bold">R$ {result.montante}</p>
             </div>
-            <div class="flex-auto">
-                <p>rendimento:</p>
-                <p>{result.rendimento}</p>
+            <div class="flex-auto w-full mt-5  md:w-24">
+                <p class="text-xl">Rendimento em juros:</p>
+                <p class="text-3xl text-blue-400 font-bold">R$ {result.rendimento}</p>
             </div>
-            <div class="flex-auto">
-                <p>Valor Investido:</p>
-                <p>{result.valorInvestido}</p>
+            <div class="flex-auto w-full mt-5  md:w-24">
+                <p class="text-xl">Valor total investido:</p>
+                <p class="text-3xl text-yellow-400 font-bold">R$ {result.valorInvestido}</p>
             </div>
-            <p class="font-bold">Caso seu investimento incida imposto de renda:</p>
-            <div class="flex-auto">
-                <p>Valor deduzido IR:</p>
-                <p>{result.montanteDepoisIR}</p>
+        </div>
+        <div class="flex flex-wrap mt-5">
+            <div class="flex-auto mt-5 w-full">
+                <p class="font-bold ">Caso seu investimento incida imposto de renda:</p>
             </div>
-            <div class="flex-auto">
-                <p>Aliquota:</p>
-                <p>{result.aliquota}</p>
+            <div class="flex-auto mt-5">
+                <p class="text-xl">Valor total após deduzido IR:</p>
+                <p class="text-2xl text-red-400 font-bold">R$ {result.montanteDepoisIR}</p>
+            </div>
+            <div class="flex-auto mt-5  md:w-24">
+                <p class="text-xl">Aliquota:</p>
+                <p class="text-2xl text-red-400 font-bold">{result.aliquota}%</p>
             </div>
             {#if parseFloat(result.valorRetidoComeCotas) > 0}
-                <div class="flex-auto">
-                    <p>Valor retido no come cotas</p>
-                    <p>{result.valorRetidoComeCotas}</p>
+                <div class="flex-auto w-full md:w-24 mt-5">
+                    <p class="text-xl">Valor retido no come cotas</p>
+                    <p class="text-2xl text-red-400 font-bold">R$ {result.valorRetidoComeCotas}</p>
                 </div>
             {/if}
         </div>
@@ -128,4 +132,4 @@
     
     {/if}
 </div>
- 
+</div>
