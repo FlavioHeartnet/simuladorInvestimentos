@@ -126,7 +126,7 @@
             </div>
             {#if parseFloat(result.valorRetidoComeCotas) > 0}
                 <div class="flex-auto w-full md:w-24 mt-5">
-                    <p class="text-xl">Valor retido no come cotas</p>
+                    <p class="text-xl">Valor retido no come cotas:</p>
                     <p class="text-2xl text-red-400 font-bold">R$ {result.valorRetidoComeCotas}</p>
                 </div>
             {/if}
