@@ -82,7 +82,6 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
       montante = montante * (1 - taxaCorretagemMensal); // Deduz a taxa de corretagem
       montante += aporteMensal; // Adiciona o aporte mensal ao mês atual.
       montantes.push(formatarNumero(montante));
-      console.log("juros: "+ taxaJurosDecimal + "valor: "+ montante)
       rendimento = montante - valorInicial - aporteMensal * (i - 1);
       rendimentosMensais.push(formatarNumero(rendimento - aporteMensal));
       valoresInvestidos.push(formatarNumero(montante - rendimento));
