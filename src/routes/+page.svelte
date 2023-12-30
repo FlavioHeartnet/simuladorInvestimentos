@@ -15,9 +15,11 @@
 	 */
     let result;
      const handleSubmit = () => {
+        console.log(`Initial: ${initialInvestment}, monthly: ${monthlyInvestment}, yearly: ${yearlytax}, brokeragefee: ${brokerageFee}, period: ${period}`)
         if(brokerageFee == ''){
             brokerageFee = '0';
         }
+
         const simulator = new SimuladorInvestimentos(parseFloat(initialInvestment),parseFloat(monthlyInvestment),parseFloat(yearlytax),parseFloat(period),parseFloat(brokerageFee), isComeCotas)
         try{
             result = simulator.calcularJurosCompostos();
@@ -63,11 +65,12 @@
         delay: 600,
         duration: 2000
     }}>
-        <Input  type='number' bind:value={initialInvestment} name='initialInvestment' label='Valor Inicial' placeholder='Digite o valor inicial' required />
+    {yearlytax}
+        <Input type='number'bind:value={initialInvestment} name='initialInvestment' label='Valor Inicial' placeholder='Digite o valor inicial' required />
         <Input type='number' bind:value={monthlyInvestment} name='monthlyInvestment' label='Aporte mensal' placeholder='Digite o valor mensal' required />
-        <Input type='number' bind:value={yearlytax} name='yearlytax' label='Juros anual' placeholder='Digite a taxa de juros anual' required />
-        <Input type='number' bind:value={period} name='period' label='Quantos anos?' placeholder='Periodo do investimento' required />
-        <Input type='number' bind:value={brokerageFee} name='brokerageFee' label='Taxa de custodia (Opcional)' placeholder='Digite a taxa de custodia do banco ou instituição financeira' />
+        <Input type='number' bind:value={yearlytax} name='yearlytax' mask='00,0000' label='Juros anual (Ex: 11.28)' placeholder='Taxa de juros anual ' required />
+        <Input type='number' bind:value={period} name='period' mask='0000' label='Quantos anos?' placeholder='Periodo do investimento' required />
+        <Input type='number' bind:value={brokerageFee} name='brokerageFee' mask='0,0000' label='Taxa de custodia (Opcional) (Ex: 0.7)' placeholder='Taxa de custodia do banco ou instituição financeira ' />
         <label class="font-bold">
             <input type="checkbox" bind:checked={isComeCotas} />
             Seu investimento esta sujeito ao come cotas?(renda fixa, cambiais ou multimercados)
