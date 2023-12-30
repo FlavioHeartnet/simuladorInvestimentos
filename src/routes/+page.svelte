@@ -3,10 +3,10 @@
 	import { SimuladorInvestimentos } from '../api/main';
     import Input from './../components/input.svelte'
     import { IconMoneybag } from '@tabler/icons-svelte';
-    let initialInvestment = '2000';
-    let monthlyInvestment = '500';
-    let yearlytax = '12';
-    let period = '20';
+    let initialInvestment = '';
+    let monthlyInvestment = '';
+    let yearlytax = '';
+    let period = '';
     let brokerageFee = '';
     let isComeCotas = false;
     let isSuccess = false;
