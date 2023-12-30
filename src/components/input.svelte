@@ -1,5 +1,6 @@
 <script>
-	import MaskInput from "./maskinput.svelte"; 
+	// TODO: Find a way to use maskInput for yearlytax, period and brokeFee using bind - current not working
+	//import MaskInput from "./maskinput.svelte"; 
 	import CurrencyInput from '@canutin/svelte-currency-input';
 	/**
 	 * @type {any}
