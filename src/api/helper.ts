@@ -65,7 +65,7 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
     temComeCotas: boolean
   ): SimulacaoOutPut {
     const taxaJurosDecimal = taxaJurosAnual / 12 / 100;
-    const numeroPeriodos = periodoAnos * 12;
+    const numeroPeriodos = periodoAnos < 1 ? periodoAnos * 10 : periodoAnos * 12;
     let montante = valorInicial;
     let rendimento = 0;
     const taxaCorretagemMensal = taxacorretagemAnual / 12 / 100; // Taxa de corretagem mensal
@@ -75,7 +75,7 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
     const montantes: string[] = [];
     const rendimentosMensais: string[] = [];
     const valoresInvestidos: string[] = [];
-   
+    console.log(numeroPeriodos)
     for (let i = 1; i <= numeroPeriodos; i++) {
       montante = montante * (1 + taxaJurosDecimal); // juros do mês anterior
       montante = montante * (1 - taxaCorretagemMensal); // Deduz a taxa de corretagem
@@ -107,7 +107,7 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
       montante: formatarNumero(montante), 
       rendimento: formatarNumero(rendimento - aporteMensal), 
       valorInvestido: formatarNumero((montante - rendimento) + aporteMensal), 
-      montanteDepoisIR: formatarNumero((montante - (rendimento - aporteMensal)) + investimentoDeduzidoImposto.rendimento), 
+      montanteDepoisIR: formatarNumero(((montante - rendimento) + aporteMensal) + investimentoDeduzidoImposto.rendimento), 
       aliquota: investimentoDeduzidoImposto.aliquota.toFixed(1),
       valorRetidoIR: formatarNumero(rendimento - investimentoDeduzidoImposto.rendimento),
       valorRetidoComeCotas: formatarNumero(impostoPagoComeCotas),
