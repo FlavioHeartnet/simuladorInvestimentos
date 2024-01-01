@@ -28,7 +28,9 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
     if(periodoAnos > 2) {
       aliquota = 0.15; // 15%
     }
+    console.log(rendimento);
     const rendimentoDeduzidoImposto = rendimento - (aliquota * rendimento);
+    console.log(rendimentoDeduzidoImposto);
     return {
       aliquota: aliquota * 100,
       rendimento: rendimentoDeduzidoImposto
@@ -96,7 +98,7 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
       }
     }
   
-    const investimentoDeduzidoImposto = calcImpostoSobrerendimento(rendimento, periodoAnos);
+    const investimentoDeduzidoImposto = calcImpostoSobrerendimento(rendimento - aporteMensal, periodoAnos);
     const meses: string[] = [];
     for (let i = 1; i <= periodoAnos * 12; i++) {
       meses.push(`${i}`);
@@ -105,7 +107,7 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
       montante: formatarNumero(montante), 
       rendimento: formatarNumero(rendimento - aporteMensal), 
       valorInvestido: formatarNumero((montante - rendimento) + aporteMensal), 
-      montanteDepoisIR: formatarNumero((montante - rendimento) + investimentoDeduzidoImposto.rendimento), 
+      montanteDepoisIR: formatarNumero((montante - (rendimento - aporteMensal)) + investimentoDeduzidoImposto.rendimento), 
       aliquota: investimentoDeduzidoImposto.aliquota.toFixed(1),
       valorRetidoIR: formatarNumero(rendimento - investimentoDeduzidoImposto.rendimento),
       valorRetidoComeCotas: formatarNumero(impostoPagoComeCotas),

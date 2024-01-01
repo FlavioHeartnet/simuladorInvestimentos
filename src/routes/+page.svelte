@@ -15,7 +15,6 @@
 	 */
     let result;
      const handleSubmit = () => {
-        console.log(`Initial: ${initialInvestment}, monthly: ${monthlyInvestment}, yearly: ${yearlytax}, brokeragefee: ${brokerageFee}, period: ${period}`)
         if(brokerageFee == ''){
             brokerageFee = '0';
         }
