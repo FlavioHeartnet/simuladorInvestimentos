@@ -18,14 +18,11 @@ export type RendimentoAliquota = {
   aliquota: number
 }
 export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: number): RendimentoAliquota  {
-    let aliquota = 0;
-    if(periodoAnos <= 0.6){
-      aliquota = 0.225; // 22,5%
-    }
-    if(periodoAnos > 0.6 && periodoAnos < 1) {
+    let aliquota = 0.225; // 22,5%
+    if(periodoAnos > 0.6 && periodoAnos <= 1) {
       aliquota = 0.20; // 20%
     }
-    if(periodoAnos > 1 && periodoAnos < 2) {
+    if(periodoAnos > 1 && periodoAnos <= 2) {
       aliquota = 0.175; // 17,5%
     }
     if(periodoAnos > 2) {
