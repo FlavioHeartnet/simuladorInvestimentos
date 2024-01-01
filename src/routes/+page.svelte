@@ -42,9 +42,24 @@
             });
         }, 50)
   }
+  // @ts-ignore
+  function scrollToTopAndCleanFields({ target }) {
+    isSuccess = false;
+    initialInvestment = '';
+    monthlyInvestment = '';
+    yearlytax = '';
+    period = '';
+    brokerageFee= '';
+    isComeCotas = false;
+    const el = document.querySelector(target.getAttribute('href'));
+            if (!el) return;
+            el.scrollIntoView({
+            behavior: 'smooth'
+            });
+  }
  
 </script>
-<div class="min-h-screen w-full md:h-full md:flex md:items-center md:place-content-center">
+<div id="begin" class="min-h-screen w-full md:h-full md:flex md:items-center md:place-content-center">
 <div class="container p-4">
     <div transition:fly={{
         delay: 300,
@@ -79,10 +94,10 @@
             delay: 700,
             duration: 2000
         }}
-         class="mx-auto text-center mt-5">
+         class="mx-auto text-center mt-5 flex gap-4">
             <a href="#success" 
             on:click|preventDefault={scrollIntoView}
-            class="w-full
+            class="flex-auto w-full
             font-jakarta
             rounded-lg
             bg-blue-modernize hover:bg-blue-modernize-dark text-white 
@@ -90,7 +105,20 @@
             px-4
             transition
             mb-2">Simular</a>
+          <a href="#begin" 
+            on:click|preventDefault={scrollToTopAndCleanFields}
+            class="flex-auto w-full
+            font-jakarta
+            rounded-lg
+            bg-slate-200 hover:bg-blue-modernize-dark hover:text-white text-blue-modernize 
+            py-2.5
+            px-4
+            transition
+            mb-2">
+          Limpar
+          </a>
         </div>
+ 
     </form>
     {#if isSuccess}
     <section id="success" transition:fade={{
