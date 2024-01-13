@@ -143,17 +143,21 @@
                 <p class="font-bold ">Caso seu investimento incida imposto de renda:</p>
             </div>
             <div class="flex-auto mt-5">
-                <p class="text-xl">Valor total após deduzido IR:</p>
+                <p class="text-xl">Valor líquido a receber:</p>
                 <p class="text-2xl text-red-400 font-bold">R$ {result.montanteDepoisIR}</p>
             </div>
             <div class="flex-auto mt-5  md:w-24">
                 <p class="text-xl">Aliquota:</p>
                 <p class="text-2xl text-red-400 font-bold">{result.aliquota}%</p>
             </div>
+            <div class="flex-auto mt-5  md:w-24">
+                <p class="text-xl">Imposto de renda:</p>
+                <p class="text-2xl text-red-300 font-bold">- R$ {result.valorRetidoIR}</p>
+            </div>
             {#if parseFloat(result.valorRetidoComeCotas) > 0}
                 <div class="flex-auto w-full md:w-24 mt-5">
-                    <p class="text-xl">Valor retido no come cotas:</p>
-                    <p class="text-2xl text-red-400 font-bold">R$ {result.valorRetidoComeCotas}</p>
+                    <p class="text-xl">Come cotas:</p>
+                    <p class="text-2xl text-red-300 font-bold">- R$ {result.valorRetidoComeCotas}</p>
                 </div>
             {/if}
         </div>
