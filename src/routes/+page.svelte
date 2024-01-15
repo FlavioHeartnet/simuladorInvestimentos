@@ -11,7 +11,7 @@
     let isComeCotas = false;
     let isSuccess = false;
     /**
-	 * @type {{ ""?: any; montante: string; rendimento: string; valorInvestido: string; montanteDepoisIR: string; valorRetidoIR?: string; aliquota: string; valorRetidoComeCotas: string; tabelaDetalhada?: { meses: string[]; montantes: string[]; rendimentosMensais: string[]; valoresInvestidos: string[]; }; }}
+	 * @type {{ ""?: any; montante: string; rendimento: string; valorInvestido: string; montanteDepoisIR: string; valorRetidoIR?: string; aliquota: string; valorRetidoComeCotas: string; tabelaDetalhada?: { meses: string[]; montantes: string[]; rendimentosMensais: string[]; valoresInvestidos: string[]; }; jurosRealAliquotaAnual: string; }}
 	 */
     let result;
      const handleSubmit = () => {
@@ -158,6 +158,10 @@
                 <div class="flex-auto w-full md:w-24 mt-5">
                     <p class="text-xl">Come cotas:</p>
                     <p class="text-2xl text-red-300 font-bold">- R$ {result.valorRetidoComeCotas}</p>
+                </div>
+                <div class="flex-auto w-full md:w-24 mt-5">
+                    <p class="text-xl">Juros Real Anual:</p>
+                    <p class="text-2xl text-red-300 font-bold">%{result.jurosRealAliquotaAnual}</p>
                 </div>
             {/if}
         </div>

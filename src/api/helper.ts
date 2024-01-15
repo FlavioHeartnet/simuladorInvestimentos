@@ -48,6 +48,7 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
     valorRetidoIR: string;
     aliquota: string;
     valorRetidoComeCotas: string;
+    jurosRealAliquotaAnual: string;
     tabelaDetalhada: {
       meses: string[];
       montantes: string[];
@@ -103,14 +104,17 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
     for (let i = 1; i <= periodoAnos * 12; i++) {
       meses.push(`${i}`);
     }
-    return {
+    const valorInvestido = (montante - rendimento) + aporteMensal;
+    const jurosrealAnual = (((Math.pow((montante/valorInvestido), 1/numeroPeriodos)) - 1) * 100) * 12;
+  return {
       montante: formatarNumero(montante), 
       rendimento: formatarNumero(rendimento - aporteMensal), 
-      valorInvestido: formatarNumero((montante - rendimento) + aporteMensal), 
+      valorInvestido: formatarNumero(valorInvestido), 
       montanteDepoisIR: formatarNumero(((montante - rendimento) + aporteMensal) + investimentoDeduzidoImposto.rendimento), 
       aliquota: investimentoDeduzidoImposto.aliquota.toFixed(1),
       valorRetidoIR: formatarNumero(rendimento - investimentoDeduzidoImposto.rendimento),
       valorRetidoComeCotas: formatarNumero(impostoPagoComeCotas),
+      jurosRealAliquotaAnual: jurosrealAnual.toFixed(2),
       tabelaDetalhada: {
         montantes: montantes,
         meses: meses,
