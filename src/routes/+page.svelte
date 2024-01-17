@@ -3,6 +3,8 @@
 	import { SimuladorInvestimentos } from '../api/main';
     import Input from './../components/input.svelte'
     import { IconMoneybag } from '@tabler/icons-svelte';
+	import { FirebaseConfig } from '../api/firebase';
+	
     let initialInvestment = '';
     let monthlyInvestment = '';
     let yearlytax = '';
@@ -10,21 +12,40 @@
     let brokerageFee = '';
     let isComeCotas = false;
     let isSuccess = false;
+    export let data;
+    const firebaseInit = new FirebaseConfig(data.apiKey, data.authDomain, data.projectId,data.storageBucket,data.messagingSenderId, data.appId, data.measurementId);
+    firebaseInit.logEvents
     /**
 	 * @type {{ ""?: any; montante: string; rendimento: string; valorInvestido: string; montanteDepoisIR: string; valorRetidoIR?: string; aliquota: string; valorRetidoComeCotas: string; tabelaDetalhada?: { meses: string[]; montantes: string[]; rendimentosMensais: string[]; valoresInvestidos: string[]; }; jurosRealAliquotaAnual: string; }}
 	 */
     let result;
      const handleSubmit = () => {
+        const customSegments = {
+            brokerageFee: brokerageFee,
+            period: period,
+            yearlytax: yearlytax,
+            initialInvestment: initialInvestment,
+            monthlyInvestment: monthlyInvestment,
+            isComeCotas: isComeCotas,
+        }
+        firebaseInit.logEvents("calc_button_tapped");
         if(brokerageFee == ''){
             brokerageFee = '0';
+        }
+        if(parseFloat(brokerageFee) > 0){
+            firebaseInit.logEvents("brokerageFee_provided", {segments: customSegments}); 
+        }
+        if(isComeCotas){
+            firebaseInit.logEvents("comecotas_provided", {segments: customSegments}); 
         }
 
         const simulator = new SimuladorInvestimentos(parseFloat(initialInvestment),parseFloat(monthlyInvestment),parseFloat(yearlytax),parseFloat(period),parseFloat(brokerageFee), isComeCotas)
         try{
             result = simulator.calcularJurosCompostos();
             isSuccess = true;
+            firebaseInit.logEvents("simulation_successful", {segments: customSegments});
         }catch (e){
-
+            firebaseInit.logEvents("simulation_failed", {error: e, segments: customSegments});
         }
         
         
@@ -43,6 +64,7 @@
   }
   // @ts-ignore
   function scrollToTopAndCleanFields({ target }) {
+    firebaseInit.logEvents("clearFields_button_tapped");
     isSuccess = false;
     initialInvestment = '';
     monthlyInvestment = '';
