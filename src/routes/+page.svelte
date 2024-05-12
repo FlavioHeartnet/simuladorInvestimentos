@@ -153,7 +153,7 @@
             </div>
              <div class="flex-auto w-full mt-5 md:w-24">
                 <p class="text-xl">Rendimento mensal</p>
-                <p class="text-3xl text-green-400 font-bold">R$ {result.rendimentoMensal}</p>
+                <p class="text-3xl text-green-600 font-bold">R$ {result.rendimentoMensal}</p>
             </div>
 
             <div class="flex-auto w-full mt-5  md:w-24">
