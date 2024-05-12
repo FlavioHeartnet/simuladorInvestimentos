@@ -43,6 +43,7 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
   export type SimulacaoOutPut = {
     montante: string;
     rendimento: string;
+    rendimentoMensal:string;
     valorInvestido: string;
     montanteDepoisIR: string;
     valorRetidoIR: string;
@@ -93,8 +94,7 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
           const aliquotaComeCotas = obterAliquotaComeCotas(diasInvestidos);
           const rendimentoSemImposto = montante - valorInicial - (aporteMensal * i);
           const impostoComeCotas = rendimentoSemImposto * aliquotaComeCotas;
-          montante -= impostoComeCotas;
-          impostoPagoComeCotas += impostoComeCotas;
+          montante -= impostoComeCotas; impostoPagoComeCotas += impostoComeCotas;
         }
       }
     }
@@ -105,12 +105,13 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
       meses.push(`${i}`);
     }
     const valorInvestido = (montante - rendimento) + aporteMensal;
+    const montanteDepoisIR = ((montante - rendimento) + aporteMensal) + investimentoDeduzidoImposto.rendimento; 
     const jurosrealAnual = (((Math.pow((montante/valorInvestido), 1/numeroPeriodos)) - 1) * 100) * 12;
   return {
       montante: formatarNumero(montante), 
       rendimento: formatarNumero(rendimento - aporteMensal), 
       valorInvestido: formatarNumero(valorInvestido), 
-      montanteDepoisIR: formatarNumero(((montante - rendimento) + aporteMensal) + investimentoDeduzidoImposto.rendimento), 
+      montanteDepoisIR: formatarNumero(montanteDepoisIR), 
       aliquota: investimentoDeduzidoImposto.aliquota.toFixed(1),
       valorRetidoIR: formatarNumero(rendimento - investimentoDeduzidoImposto.rendimento),
       valorRetidoComeCotas: formatarNumero(impostoPagoComeCotas),
@@ -120,13 +121,11 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
         meses: meses,
         rendimentosMensais: rendimentosMensais,
         valoresInvestidos: valoresInvestidos,
-      }
+      },
+      rendimentoMensal: formatarNumero((montanteDepoisIR * taxaJurosAnual)/100 / 12)
     }
   }
 
   export function imprimirTabela(meses: string[], montantes: string[], totais: string[], valoresInvestidos: string[]): void {
     console.log('Mês\tMontante\tRendimento Mensal\tValor Mensal Investido');
-    for (let i = 0; i < meses.length; i++) {
-      console.log(`${meses[i]}\tR$${montantes[i]}\tR$${totais[i]}\t\tR$${valoresInvestidos[i]}`);
-    } 
-  }
+    for (let i = 0; i < meses.length; i++) { console.log(`${meses[i]}\tR$${montantes[i]}\tR$${totais[i]}\t\tR$${valoresInvestidos[i]}`); } }

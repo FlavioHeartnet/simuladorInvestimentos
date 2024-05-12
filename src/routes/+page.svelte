@@ -16,7 +16,7 @@
     const firebaseInit = new FirebaseConfig(data.apiKey, data.authDomain, data.projectId,data.storageBucket,data.messagingSenderId, data.appId, data.measurementId);
     firebaseInit.logEvents
     /**
-	 * @type {{ ""?: any; montante: string; rendimento: string; valorInvestido: string; montanteDepoisIR: string; valorRetidoIR?: string; aliquota: string; valorRetidoComeCotas: string; tabelaDetalhada?: { meses: string[]; montantes: string[]; rendimentosMensais: string[]; valoresInvestidos: string[]; }; jurosRealAliquotaAnual: string; }}
+	 * @type {{ ""?: any; montante: string; rendimento: string; valorInvestido: string; montanteDepoisIR: string; valorRetidoIR?: string; aliquota: string; valorRetidoComeCotas: string; tabelaDetalhada?: { meses: string[]; montantes: string[]; rendimentosMensais: string[]; valoresInvestidos: string[]; }; jurosRealAliquotaAnual: string; rendimentoMensal: string; }}
 	 */
     let result;
      const handleSubmit = () => {
@@ -146,11 +146,16 @@
         delay: 200,
         duration: 300
     }}>
-        <div class="flex flex-wrap mt-5">
+        <div class="flex flex-wrap gap-4 mt-5">
             <div class="flex-auto w-full mt-5 md:w-24">
                 <p class="text-xl">Montante total final:</p>
                 <p class="text-3xl text-green-400 font-bold">R$ {result.montante}</p>
             </div>
+             <div class="flex-auto w-full mt-5 md:w-24">
+                <p class="text-xl">Rendimento mensal</p>
+                <p class="text-3xl text-green-400 font-bold">R$ {result.rendimentoMensal}</p>
+            </div>
+
             <div class="flex-auto w-full mt-5  md:w-24">
                 <p class="text-xl">Rendimento em juros:</p>
                 <p class="text-3xl text-blue-400 font-bold">R$ {result.rendimento}</p>
