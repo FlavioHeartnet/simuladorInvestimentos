@@ -95,7 +95,7 @@
     <p transition:fly={{
         delay: 500,
         duration: 2000
-    }}>Faça projeções sobre quanto seu dinheiro irá render, calculo de impostos e taxas de corretagens</p>
+    }}>Faça projeções sobre quanto seu dinheiro irá render, calculo de impostos e taxas de corretagens e rendimento mensal para aposentadoria(baseado no valor deduzido imposto de renda e levando em consideração o juros informado abaixo).</p>
     <br/>
     <form transition:fly={{
         delay: 600,
