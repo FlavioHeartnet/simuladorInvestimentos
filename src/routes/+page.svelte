@@ -152,7 +152,7 @@
                 <p class="text-3xl text-green-400 font-bold">R$ {result.montante}</p>
             </div>
              <div class="flex-auto w-full mt-5 md:w-24">
-                <p class="text-xl">Rendimento mensal</p>
+                <p class="text-xl">Rendimento mensal:</p>
                 <p class="text-3xl text-green-600 font-bold">R$ {result.rendimentoMensal}</p>
             </div>
 
@@ -165,7 +165,7 @@
                 <p class="text-3xl text-yellow-400 font-bold">R$ {result.valorInvestido}</p>
             </div>
         </div>
-        <div class="flex flex-wrap mt-5">
+        <div class="flex flex-wrap gap-4 mt-5">
             <div class="flex-auto mt-5 w-full">
                 <p class="font-bold ">Caso seu investimento incida imposto de renda:</p>
             </div>
