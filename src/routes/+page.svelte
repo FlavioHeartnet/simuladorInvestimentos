@@ -149,20 +149,20 @@
         <div class="flex flex-wrap gap-4 mt-5">
             <div class="flex-auto w-full mt-5 md:w-24">
                 <p class="text-xl">Montante total final:</p>
-                <p class="text-3xl text-green-400 font-bold">R$ {result.montante}</p>
+                <p class="lg:text-3xl md:text-xl text-green-400 font-bold">R$ {result.montante}</p>
             </div>
              <div class="flex-auto w-full mt-5 md:w-24">
                 <p class="text-xl">Rendimento mensal:</p>
-                <p class="text-3xl text-green-600 font-bold">R$ {result.rendimentoMensal}</p>
+                <p class="lg:text-3xl md:text-xl text-green-600 font-bold">R$ {result.rendimentoMensal}</p>
             </div>
 
             <div class="flex-auto w-full mt-5  md:w-24">
                 <p class="text-xl">Rendimento em juros:</p>
-                <p class="text-3xl text-blue-400 font-bold">R$ {result.rendimento}</p>
+                <p class="lg:text-3xl md:text-xl text-blue-400 font-bold">R$ {result.rendimento}</p>
             </div>
             <div class="flex-auto w-full mt-5  md:w-24">
                 <p class="text-xl">Valor total investido:</p>
-                <p class="text-3xl text-yellow-400 font-bold">R$ {result.valorInvestido}</p>
+                <p class=" lg:text-3xl md:text-xl text-yellow-400 font-bold">R$ {result.valorInvestido}</p>
             </div>
         </div>
         <div class="flex flex-wrap gap-4 mt-5">
@@ -171,24 +171,24 @@
             </div>
             <div class="flex-auto mt-5">
                 <p class="text-xl">Valor líquido a receber:</p>
-                <p class="text-2xl text-red-400 font-bold">R$ {result.montanteDepoisIR}</p>
+                <p class="lg:text-2xl md:text-xl text-red-400 font-bold">R$ {result.montanteDepoisIR}</p>
             </div>
             <div class="flex-auto mt-5  md:w-24">
                 <p class="text-xl">Aliquota:</p>
-                <p class="text-2xl text-red-400 font-bold">{result.aliquota}%</p>
+                <p class="lg:text-2xl md:text-xl text-red-400 font-bold">{result.aliquota}%</p>
             </div>
             <div class="flex-auto mt-5  md:w-24">
                 <p class="text-xl">Imposto de renda:</p>
-                <p class="text-2xl text-red-300 font-bold">- R$ {result.valorRetidoIR}</p>
+                <p class="lg:text-2xl md:text-xl text-red-300 font-bold">- R$ {result.valorRetidoIR}</p>
             </div>
             {#if parseFloat(result.valorRetidoComeCotas) > 0}
                 <div class="flex-auto w-full md:w-24 mt-5">
                     <p class="text-xl">Come cotas:</p>
-                    <p class="text-2xl text-red-300 font-bold">- R$ {result.valorRetidoComeCotas}</p>
+                    <p class="lg:text-2xl md:text-xl text-red-300 font-bold">- R$ {result.valorRetidoComeCotas}</p>
                 </div>
                 <div class="flex-auto w-full md:w-24 mt-5">
                     <p class="text-xl">Juros Real Anual:</p>
-                    <p class="text-2xl text-red-300 font-bold">%{result.jurosRealAliquotaAnual}</p>
+                    <p class="lg:text-2xl md:text-xl text-red-300 font-bold">%{result.jurosRealAliquotaAnual}</p>
                 </div>
             {/if}
         </div>
