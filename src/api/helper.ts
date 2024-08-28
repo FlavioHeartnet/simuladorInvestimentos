@@ -106,9 +106,16 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
     let rendimentoMensal = 0;
     let montanteDepoisIR = 0
     if (previdencia == 'PGBL'){
-      valorRetidoIR = montante * 0.15;
+      switch(tributacaoPrevidencia){
+        case 'progressiva': aliquota = obterTaxaTributacaoTradicional(periodoAnos);
+          break;
+        case 'regressiva': aliquota = aliquota = obterTaxaTributacaoRegressiva(periodoAnos);
+          break;
+        default: aliquota = 0.15  
+      }
+      valorRetidoIR = montante * aliquota;
       montanteDepoisIR = montante - valorRetidoIR;
-      aliquota = 15;
+      aliquota*= 100;
       
     }else{
       const investimentoDeduzidoImposto = calcImpostoSobrerendimento(rendimento - aporteMensal, periodoAnos, tributacaoPrevidencia == 'regressiva');
