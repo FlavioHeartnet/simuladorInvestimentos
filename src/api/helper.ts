@@ -1,4 +1,4 @@
-import { calcularMediaIpca, obterTaxaTributacaoProgressiva, obterTaxaTributacaoRegressiva, obterTaxaTributacaoTradicional } from "./constants";
+import { calcularMediaIpca, obterTaxaTributacaoRegressiva, obterTaxaTributacaoTradicional } from "./constants";
 
 export function formatarNumero(numero: number): string {
     return numero.toFixed(2).replace(/\./g, ',').replace(/\d(?=(\d{3})+,)/g, '$&.');
@@ -104,13 +104,19 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
     let aliquota: number = 0;
     let valorRetidoIR = 0;
     let rendimentoMensal = 0;
-
+    let montanteDepoisIR = 0
+    if (previdencia == 'PGBL'){
+      valorRetidoIR = montante * 0.15;
+      montanteDepoisIR = montante - valorRetidoIR;
+      aliquota = 15;
+      
+    }else{
       const investimentoDeduzidoImposto = calcImpostoSobrerendimento(rendimento - aporteMensal, periodoAnos, tributacaoPrevidencia == 'regressiva');
-      const montanteDepoisIR = ((montante - rendimento) + aporteMensal) + investimentoDeduzidoImposto.rendimento;
+      montanteDepoisIR = ((montante - rendimento) + aporteMensal) + investimentoDeduzidoImposto.rendimento;
       aliquota = investimentoDeduzidoImposto.aliquota;
       valorRetidoIR = rendimento - investimentoDeduzidoImposto.rendimento
-      rendimentoMensal = montanteDepoisIR * taxaJurosAnual/100 / 12;
-    
+    }
+    rendimentoMensal = montanteDepoisIR * taxaJurosAnual/100 / 12;
     
 
     const meses: string[] = [];
