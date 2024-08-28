@@ -78,6 +78,9 @@
     period = '';
     brokerageFee= '';
     isComeCotas = false;
+    isPrevidencia =false;
+    selectedOptionPrevidencia = '';
+    selectedOptionPrevidenciaTributacao = ''; 
     const el = document.querySelector(target.getAttribute('href'));
             if (!el) return;
             el.scrollIntoView({
@@ -149,11 +152,12 @@
         <Input type='number' bind:value={yearlytax} name='yearlytax' mask='00,0000' label='Juros anual (Ex: 11.28)' placeholder='Taxa de juros anual ' required />
         <Input type='number' bind:value={period} name='period' mask='0000' label='Quantos anos? (para meses: 0.7 -> mes 7)' placeholder='Periodo do investimento' required />
         <Input type='number' bind:value={brokerageFee} name='brokerageFee' mask='0,0000' label='Taxa de custodia anual (Opcional) (Ex: 0.7)' placeholder='Taxa de custodia do banco ou instituição financeira ' />
+        {#if !isPrevidencia}
         <label class="font-bold">
             <input type="checkbox" bind:checked={isComeCotas} />
             Seu investimento esta sujeito ao come cotas?(renda fixa, cambiais ou multimercados)
         </label>
-
+        {/if}
         <div transition:fly={{
             delay: 700,
             duration: 2000
