@@ -181,10 +181,12 @@
                 <p class="text-xl">Imposto de renda:</p>
                 <p class="lg:text-2xl text-xl text-red-300 font-bold">- R$ {result.valorRetidoIR}</p>
             </div>
-            <div class="flex-auto mt-5  md:w-24">
+           <!--
+           <div class="flex-auto mt-5  md:w-24">
                 <p class="text-xl">Quanto voce teria levando em conta a inflação</p>
                 <p class="lg:text-2xl text-xl text-red-400 font-bold"> R$ {result.montanteDepoisIPCA}</p>
-            </div>
+            </div> 
+           --> 
             {#if parseFloat(result.valorRetidoComeCotas) > 0}
                 <div class="flex-auto w-full md:w-24 mt-5">
                     <p class="text-xl">Come cotas:</p>
