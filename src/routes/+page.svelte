@@ -30,6 +30,9 @@
             initialInvestment: initialInvestment,
             monthlyInvestment: monthlyInvestment,
             isComeCotas: isComeCotas,
+            previdencia: selectedOptionPrevidencia,
+            tributacaoPrevidencia: selectedOptionPrevidenciaTributacao
+
         }
         firebaseInit.logEvents("calc_button_tapped");
         if(brokerageFee == ''){
@@ -42,7 +45,7 @@
             firebaseInit.logEvents("comecotas_provided", {segments: customSegments}); 
         }
 
-        const simulator = new SimuladorInvestimentos(parseFloat(initialInvestment),parseFloat(monthlyInvestment),parseFloat(yearlytax),parseFloat(period),parseFloat(brokerageFee), isComeCotas)
+        const simulator = new SimuladorInvestimentos(parseFloat(initialInvestment),parseFloat(monthlyInvestment),parseFloat(yearlytax),parseFloat(period),parseFloat(brokerageFee), isComeCotas, selectedOptionPrevidencia, selectedOptionPrevidenciaTributacao)
         try{
             result = simulator.calcularJurosCompostos();
             isSuccess = true;

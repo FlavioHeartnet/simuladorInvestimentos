@@ -8,17 +8,21 @@ export class SimuladorInvestimentos {
   periodoAnos: number = 0;
   taxacorretagemAnual: number = 0;
   temComeCotas: boolean = false;
+  previdencia: string = '';
+  tributacaoPrevidencia: string = '';
 
-  constructor(valorInicial: number, aporteMensal: number, taxaJurosMensal: number, periodoAnos:number, taxacorretagemAnual: number, temComeCotas: boolean  ){
+  constructor(valorInicial: number, aporteMensal: number, taxaJurosMensal: number, periodoAnos:number, taxacorretagemAnual: number, temComeCotas: boolean, previdencia: string = '', tributacaoPrevidencia: string = ''){
     this.valorInicial = valorInicial;
     this.aporteMensal = aporteMensal;
     this.taxaJurosAnual = taxaJurosMensal;
     this.periodoAnos = periodoAnos;
     this.taxacorretagemAnual = taxacorretagemAnual;
     this.temComeCotas = temComeCotas;
+    this.previdencia = previdencia;
+    this.tributacaoPrevidencia = tributacaoPrevidencia
   }
 
   calcularJurosCompostos(): SimulacaoOutPut {
-    return calcularJurosCompostos(this.valorInicial, this.aporteMensal, this.taxaJurosAnual, this.periodoAnos, this.taxacorretagemAnual, this.temComeCotas); 
+    return calcularJurosCompostos(this.valorInicial, this.aporteMensal, this.taxaJurosAnual, this.periodoAnos, this.taxacorretagemAnual, this.temComeCotas, this.previdencia, this. tributacaoPrevidencia); 
   }
 }

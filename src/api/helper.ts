@@ -1,4 +1,4 @@
-import { calcularMediaIpca } from "./constants";
+import { calcularMediaIpca, obterTaxaTributacaoProgressiva, obterTaxaTributacaoRegressiva, obterTaxaTributacaoTradicional } from "./constants";
 
 export function formatarNumero(numero: number): string {
     return numero.toFixed(2).replace(/\./g, ',').replace(/\d(?=(\d{3})+,)/g, '$&.');
@@ -19,16 +19,12 @@ export type RendimentoAliquota = {
   rendimento: number;
   aliquota: number
 }
-export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: number): RendimentoAliquota  {
-    let aliquota = 0.225; // 22,5%
-    if(periodoAnos > 0.6 && periodoAnos <= 1) {
-      aliquota = 0.20; // 20%
-    }
-    if(periodoAnos > 1 && periodoAnos <= 2) {
-      aliquota = 0.175; // 17,5%
-    }
-    if(periodoAnos > 2) {
-      aliquota = 0.15; // 15%
+export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: number, isTributacaoRegressiva: boolean = false): RendimentoAliquota  {
+    let aliquota = 0;
+    if(isTributacaoRegressiva){
+      aliquota = obterTaxaTributacaoRegressiva(periodoAnos);
+    }else{
+      aliquota = obterTaxaTributacaoTradicional(periodoAnos)
     }
     console.log(rendimento);
     const rendimentoDeduzidoImposto = rendimento - (aliquota * rendimento);
@@ -67,7 +63,9 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
     taxaJurosAnual: number,
     periodoAnos: number,
     taxacorretagemAnual: number,
-    temComeCotas: boolean
+    temComeCotas: boolean,
+    previdencia: string = '',
+    tributacaoPrevidencia: string = ''
   ): SimulacaoOutPut {
     const taxaJurosDecimal = taxaJurosAnual / 12 / 100;
     const numeroPeriodos = periodoAnos < 1 ? periodoAnos * 10 : periodoAnos * 12;
@@ -103,22 +101,32 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
         }
       }
     }
-  
-    const investimentoDeduzidoImposto = calcImpostoSobrerendimento(rendimento - aporteMensal, periodoAnos);
+    let aliquota: number = 0;
+    let valorRetidoIR = 0;
+    let rendimentoMensal = 0;
+
+      const investimentoDeduzidoImposto = calcImpostoSobrerendimento(rendimento - aporteMensal, periodoAnos, tributacaoPrevidencia == 'regressiva');
+      const montanteDepoisIR = ((montante - rendimento) + aporteMensal) + investimentoDeduzidoImposto.rendimento;
+      aliquota = investimentoDeduzidoImposto.aliquota;
+      valorRetidoIR = rendimento - investimentoDeduzidoImposto.rendimento
+      rendimentoMensal = montanteDepoisIR * taxaJurosAnual/100 / 12;
+    
+    
+
     const meses: string[] = [];
+
     for (let i = 1; i <= periodoAnos * 12; i++) {
       meses.push(`${i}`);
     }
     const valorInvestido = (montante - rendimento) + aporteMensal;
-    const montanteDepoisIR = ((montante - rendimento) + aporteMensal) + investimentoDeduzidoImposto.rendimento; 
     const jurosrealAnual = (((Math.pow((montante/valorInvestido), 1/numeroPeriodos)) - 1) * 100) * 12;
   return {
       montante: formatarNumero(montante), 
       rendimento: formatarNumero(rendimento - aporteMensal), 
       valorInvestido: formatarNumero(valorInvestido), 
       montanteDepoisIR: formatarNumero(montanteDepoisIR), 
-      aliquota: investimentoDeduzidoImposto.aliquota.toFixed(1),
-      valorRetidoIR: formatarNumero(rendimento - investimentoDeduzidoImposto.rendimento),
+      aliquota: aliquota.toFixed(1),
+      valorRetidoIR: formatarNumero(valorRetidoIR),
       valorRetidoComeCotas: formatarNumero(impostoPagoComeCotas),
       jurosRealAliquotaAnual: jurosrealAnual.toFixed(2),
       montanteDepoisIPCA: formatarNumero(montanteDepoisIPCA),
@@ -128,7 +136,7 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
         rendimentosMensais: rendimentosMensais,
         valoresInvestidos: valoresInvestidos,
       },
-      rendimentoMensal: formatarNumero((montanteDepoisIR * taxaJurosAnual)/100 / 12),
+      rendimentoMensal: formatarNumero(rendimentoMensal),
       
     }
   }

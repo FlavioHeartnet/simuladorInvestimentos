@@ -88,3 +88,18 @@ export const ipcaData = [
       return 0.275; // 27.5%
     }
   }
+
+  export function obterTaxaTributacaoTradicional(anos: number){
+    let aliquota = 0.225; // 22,5%
+    if(anos > 0.6 && anos <= 1) {
+        aliquota = 0.20; // 20%
+      }
+      if(anos > 1 && anos <= 2) {
+        aliquota = 0.175; // 17,5%
+      }
+      if(anos > 2) {
+        aliquota = 0.15; // 15%
+      }
+
+      return aliquota;
+  }
