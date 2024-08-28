@@ -16,7 +16,7 @@
     const firebaseInit = new FirebaseConfig(data.apiKey, data.authDomain, data.projectId,data.storageBucket,data.messagingSenderId, data.appId, data.measurementId);
     firebaseInit.logEvents
     /**
-	 * @type {{ ""?: any; montante: string; rendimento: string; valorInvestido: string; montanteDepoisIR: string; valorRetidoIR?: string; aliquota: string; valorRetidoComeCotas: string; tabelaDetalhada?: { meses: string[]; montantes: string[]; rendimentosMensais: string[]; valoresInvestidos: string[]; }; jurosRealAliquotaAnual: string; rendimentoMensal: string; }}
+	 * @type {{ ""?: any; montante: string; rendimento: string; valorInvestido: string; montanteDepoisIR: string; valorRetidoIR?: string; aliquota: string; valorRetidoComeCotas: string; tabelaDetalhada?: { meses: string[]; montantes: string[]; rendimentosMensais: string[]; valoresInvestidos: string[]; }; jurosRealAliquotaAnual: string; rendimentoMensal: string; montanteDepoisIPCA: string; }}
 	 */
     let result;
      const handleSubmit = () => {
@@ -180,6 +180,10 @@
             <div class="flex-auto mt-5  md:w-24">
                 <p class="text-xl">Imposto de renda:</p>
                 <p class="lg:text-2xl text-xl text-red-300 font-bold">- R$ {result.valorRetidoIR}</p>
+            </div>
+            <div class="flex-auto mt-5  md:w-24">
+                <p class="text-xl">Quanto voce teria levando em conta a inflação</p>
+                <p class="lg:text-2xl text-xl text-red-400 font-bold"> R$ {result.montanteDepoisIPCA}</p>
             </div>
             {#if parseFloat(result.valorRetidoComeCotas) > 0}
                 <div class="flex-auto w-full md:w-24 mt-5">

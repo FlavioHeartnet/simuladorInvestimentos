@@ -1,3 +1,5 @@
+import { calcularMediaIpca } from "./constants";
+
 export function formatarNumero(numero: number): string {
     return numero.toFixed(2).replace(/\./g, ',').replace(/\d(?=(\d{3})+,)/g, '$&.');
 }
@@ -50,6 +52,7 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
     aliquota: string;
     valorRetidoComeCotas: string;
     jurosRealAliquotaAnual: string;
+    montanteDepoisIPCA:string;
     tabelaDetalhada: {
       meses: string[];
       montantes: string[];
@@ -72,7 +75,8 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
     let rendimento = 0;
     const taxaCorretagemMensal = taxacorretagemAnual / 12 / 100; // Taxa de corretagem mensal
     let  impostoPagoComeCotas = 0; // Valor total de impostos pagos no come cotas
-  
+    let montanteDepoisIPCA =0;
+    const mediaIPCA = (calcularMediaIpca(periodoAnos)/100);
     //guardar valores mensais
     const montantes: string[] = [];
     const rendimentosMensais: string[] = [];
@@ -82,6 +86,7 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
       montante = montante * (1 + taxaJurosDecimal); // juros do mês anterior
       montante = montante * (1 - taxaCorretagemMensal); // Deduz a taxa de corretagem
       montante += aporteMensal; // Adiciona o aporte mensal ao mês atual.
+      montanteDepoisIPCA = montante - (montante * mediaIPCA)// ! isso esta errado precisa ser por anos e somar tudo no final
       montantes.push(formatarNumero(montante));
       rendimento = montante - valorInicial - aporteMensal * (i - 1);
       rendimentosMensais.push(formatarNumero(rendimento - aporteMensal));
@@ -116,13 +121,15 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
       valorRetidoIR: formatarNumero(rendimento - investimentoDeduzidoImposto.rendimento),
       valorRetidoComeCotas: formatarNumero(impostoPagoComeCotas),
       jurosRealAliquotaAnual: jurosrealAnual.toFixed(2),
+      montanteDepoisIPCA: formatarNumero(montanteDepoisIPCA),
       tabelaDetalhada: {
         montantes: montantes,
         meses: meses,
         rendimentosMensais: rendimentosMensais,
         valoresInvestidos: valoresInvestidos,
       },
-      rendimentoMensal: formatarNumero((montanteDepoisIR * taxaJurosAnual)/100 / 12)
+      rendimentoMensal: formatarNumero((montanteDepoisIR * taxaJurosAnual)/100 / 12),
+      
     }
   }
 
