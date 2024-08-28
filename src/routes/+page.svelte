@@ -11,6 +11,9 @@
     let period = '';
     let brokerageFee = '';
     let isComeCotas = false;
+    let isPrevidencia =false;
+    let selectedOptionPrevidencia = '';
+    let selectedOptionPrevidenciaTributacao = ''; 
     let isSuccess = false;
     export let data;
     const firebaseInit = new FirebaseConfig(data.apiKey, data.authDomain, data.projectId,data.storageBucket,data.messagingSenderId, data.appId, data.measurementId);
@@ -101,6 +104,43 @@
         delay: 600,
         duration: 2000
     }}>
+        <div class="mb-5">
+            <label class="font-bold">
+                <input type="checkbox" bind:checked={isPrevidencia} />
+                O fundo que você esta simulando é Previdência Privada?
+            </label>
+        </div>
+        
+        {#if isPrevidencia}
+        <p class="font-bold">Qual o plano da previdência?</p>
+        <div class="mb-5 flex">
+            <label class="font-bold flex-auto">
+                <input type="radio" name="tipoprevidencia" value="PGBL" bind:group={selectedOptionPrevidencia} />
+                PGBL
+            </label>
+              <br />
+            <label class="font-bold flex-auto">
+                <input type="radio" name="tipoprevidencia" value="VGBL" bind:group={selectedOptionPrevidencia} />
+                VGBL
+            </label>
+        </div>
+        {/if}
+
+        {#if selectedOptionPrevidencia != '' && isPrevidencia}
+        <p class="font-bold">Qual a tributação do seu plano da previdência?</p>
+        <div class="mb-5 flex">
+            <label class="font-bold flex-auto">
+                <input type="radio" name="tributacaoprevidencia" value="progressiva" bind:group={selectedOptionPrevidenciaTributacao} />
+                Progressiva
+            </label>
+              <br />
+            <label class="font-bold flex-auto">
+                <input type="radio" name="tributacaoprevidencia" value="regressiva" bind:group={selectedOptionPrevidenciaTributacao} />
+                Regressiva
+            </label>
+        </div>
+        {/if}
+        
         <Input type='number'bind:value={initialInvestment} name='initialInvestment' label='Valor Inicial' placeholder='Digite o valor inicial' required />
         <Input type='number' bind:value={monthlyInvestment} name='monthlyInvestment' label='Aporte mensal' placeholder='Digite o valor mensal' required />
         <Input type='number' bind:value={yearlytax} name='yearlytax' mask='00,0000' label='Juros anual (Ex: 11.28)' placeholder='Taxa de juros anual ' required />

@@ -86,7 +86,7 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
       montante = montante * (1 + taxaJurosDecimal); // juros do mês anterior
       montante = montante * (1 - taxaCorretagemMensal); // Deduz a taxa de corretagem
       montante += aporteMensal; // Adiciona o aporte mensal ao mês atual.
-      montanteDepoisIPCA = montante - (montante * mediaIPCA)// ! isso esta errado precisa ser por anos e somar tudo no final
+      montanteDepoisIPCA -= (montante * mediaIPCA)// ! isso esta errado precisa ser por anos e somar tudo no final
       montantes.push(formatarNumero(montante));
       rendimento = montante - valorInicial - aporteMensal * (i - 1);
       rendimentosMensais.push(formatarNumero(rendimento - aporteMensal));
