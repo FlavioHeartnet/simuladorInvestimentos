@@ -123,14 +123,15 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
       aliquota = investimentoDeduzidoImposto.aliquota;
       valorRetidoIR = rendimento - investimentoDeduzidoImposto.rendimento
     }
-    rendimentoMensal = montanteDepoisIR * taxaJurosAnual/100 / 12;
-    
-
     const meses: string[] = [];
-
     for (let i = 1; i <= periodoAnos * 12; i++) {
       meses.push(`${i}`);
     }
+    const taxaJurosMensal = taxaJurosAnual/100 / 12;
+    rendimentoMensal = montanteDepoisIR * taxaJurosMensal;
+
+
+    
     const valorInvestido = (montante - rendimento) + aporteMensal;
     const jurosrealAnual = (((Math.pow((montante/valorInvestido), 1/numeroPeriodos)) - 1) * 100) * 12;
   return {
