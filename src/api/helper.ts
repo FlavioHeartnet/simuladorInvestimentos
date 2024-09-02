@@ -1,4 +1,5 @@
 import { calcularMediaIpca, obterTaxaTributacaoRegressiva, obterTaxaTributacaoTradicional } from "./constants";
+import { calculoAporteMensal } from "./profitabilitycalc";
 
 export function formatarNumero(numero: number): string {
     return numero.toFixed(2).replace(/\./g, ',').replace(/\d(?=(\d{3})+,)/g, '$&.');
@@ -49,6 +50,7 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
     valorRetidoComeCotas: string;
     jurosRealAliquotaAnual: string;
     montanteDepoisIPCA:string;
+    aporteMensais: string;
     tabelaDetalhada: {
       meses: string[];
       montantes: string[];
@@ -65,7 +67,8 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
     taxacorretagemAnual: number,
     temComeCotas: boolean,
     previdencia: string = '',
-    tributacaoPrevidencia: string = ''
+    tributacaoPrevidencia: string = '',
+    aposentadoria: number = 0,
   ): SimulacaoOutPut {
     const taxaJurosDecimal = taxaJurosAnual / 12 / 100;
     const numeroPeriodos = periodoAnos < 1 ? periodoAnos * 10 : periodoAnos * 12;
@@ -79,28 +82,35 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
     const montantes: string[] = [];
     const rendimentosMensais: string[] = [];
     const valoresInvestidos: string[] = [];
-    console.log(numeroPeriodos)
-    for (let i = 1; i <= numeroPeriodos; i++) {
-      montante = montante * (1 + taxaJurosDecimal); // juros do mês anterior
-      montante = montante * (1 - taxaCorretagemMensal); // Deduz a taxa de corretagem
-      montante += aporteMensal; // Adiciona o aporte mensal ao mês atual.
-      montanteDepoisIPCA -= (montante * mediaIPCA)// ! isso esta errado precisa ser por anos e somar tudo no final
-      montantes.push(formatarNumero(montante));
-      rendimento = montante - valorInicial - aporteMensal * (i - 1);
-      rendimentosMensais.push(formatarNumero(rendimento - aporteMensal));
-      valoresInvestidos.push(formatarNumero(montante - rendimento));
-      
-      if(temComeCotas){
-        if ((i + 1) % 6 === 0) {
-          // Aplica o come-cotas a cada 6 meses
-          const diasInvestidos = (i + 1) * 30; // Aproximadamente assumindo 30 dias por mês
-          const aliquotaComeCotas = obterAliquotaComeCotas(diasInvestidos);
-          const rendimentoSemImposto = montante - valorInicial - (aporteMensal * i);
-          const impostoComeCotas = rendimentoSemImposto * aliquotaComeCotas;
-          montante -= impostoComeCotas; impostoPagoComeCotas += impostoComeCotas;
+    if(aposentadoria > 0){
+      const aposentadoriaInfo = calculoAporteMensal(aposentadoria, taxaJurosAnual, periodoAnos);
+      montante = aposentadoriaInfo.montanteFuturo;
+      rendimento = aposentadoria;
+      aporteMensal = aposentadoriaInfo.depositoMensal;
+    }else{
+      for (let i = 1; i <= numeroPeriodos; i++) {
+        montante = montante * (1 + taxaJurosDecimal); // juros do mês anterior
+        montante = montante * (1 - taxaCorretagemMensal); // Deduz a taxa de corretagem
+        montante += aporteMensal; // Adiciona o aporte mensal ao mês atual.
+        montanteDepoisIPCA -= (montante * mediaIPCA)// ! isso esta errado precisa ser por anos e somar tudo no final
+        montantes.push(formatarNumero(montante));
+        rendimento = montante - valorInicial - aporteMensal * (i - 1);
+        rendimentosMensais.push(formatarNumero(rendimento - aporteMensal));
+        valoresInvestidos.push(formatarNumero(montante - rendimento));
+        
+        if(temComeCotas){
+          if ((i + 1) % 6 === 0) {
+            // Aplica o come-cotas a cada 6 meses
+            const diasInvestidos = (i + 1) * 30; // Aproximadamente assumindo 30 dias por mês
+            const aliquotaComeCotas = obterAliquotaComeCotas(diasInvestidos);
+            const rendimentoSemImposto = montante - valorInicial - (aporteMensal * i);
+            const impostoComeCotas = rendimentoSemImposto * aliquotaComeCotas;
+            montante -= impostoComeCotas; impostoPagoComeCotas += impostoComeCotas;
+          }
         }
       }
     }
+    
     let aliquota: number = 0;
     let valorRetidoIR = 0;
     let rendimentoMensal = 0;
@@ -144,6 +154,7 @@ export function calcImpostoSobrerendimento(rendimento: number, periodoAnos: numb
       valorRetidoComeCotas: formatarNumero(impostoPagoComeCotas),
       jurosRealAliquotaAnual: jurosrealAnual.toFixed(2),
       montanteDepoisIPCA: formatarNumero(montanteDepoisIPCA),
+      aporteMensais: formatarNumero(aporteMensal),
       tabelaDetalhada: {
         montantes: montantes,
         meses: meses,

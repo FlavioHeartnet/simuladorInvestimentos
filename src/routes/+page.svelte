@@ -10,8 +10,10 @@
     let yearlytax = '';
     let period = '';
     let brokerageFee = '';
+    let retirement = '';
     let isComeCotas = false;
     let isPrevidencia =false;
+    let isSimpleMode = false;
     let selectedOptionPrevidencia = '';
     let selectedOptionPrevidenciaTributacao = ''; 
     let isSuccess = false;
@@ -19,7 +21,7 @@
     const firebaseInit = new FirebaseConfig(data.apiKey, data.authDomain, data.projectId,data.storageBucket,data.messagingSenderId, data.appId, data.measurementId);
     firebaseInit.logEvents
     /**
-	 * @type {{ ""?: any; montante: string; rendimento: string; valorInvestido: string; montanteDepoisIR: string; valorRetidoIR?: string; aliquota: string; valorRetidoComeCotas: string; tabelaDetalhada?: { meses: string[]; montantes: string[]; rendimentosMensais: string[]; valoresInvestidos: string[]; }; jurosRealAliquotaAnual: string; rendimentoMensal: string; montanteDepoisIPCA: string; }}
+	 * @type {{ ""?: any; montante: string; rendimento: string; valorInvestido: string; montanteDepoisIR: string; valorRetidoIR?: string; aliquota: string; valorRetidoComeCotas: string; tabelaDetalhada?: { meses: string[]; montantes: string[]; rendimentosMensais: string[]; valoresInvestidos: string[]; }; jurosRealAliquotaAnual: string; rendimentoMensal: string; montanteDepoisIPCA: string; aporteMensais: string; }}
 	 */
     let result;
      const handleSubmit = () => {
@@ -45,7 +47,7 @@
             firebaseInit.logEvents("comecotas_provided", {segments: customSegments}); 
         }
 
-        const simulator = new SimuladorInvestimentos(parseFloat(initialInvestment),parseFloat(monthlyInvestment),parseFloat(yearlytax),parseFloat(period),parseFloat(brokerageFee), isComeCotas, selectedOptionPrevidencia, selectedOptionPrevidenciaTributacao)
+        const simulator = new SimuladorInvestimentos(parseFloat(initialInvestment),parseFloat(monthlyInvestment),parseFloat(yearlytax),parseFloat(period),parseFloat(brokerageFee),parseFloat(retirement), isComeCotas, selectedOptionPrevidencia, selectedOptionPrevidenciaTributacao)
         try{
             result = simulator.calcularJurosCompostos();
             isSuccess = true;
@@ -79,6 +81,7 @@
     brokerageFee= '';
     isComeCotas = false;
     isPrevidencia =false;
+    isSimpleMode = false;
     selectedOptionPrevidencia = '';
     selectedOptionPrevidenciaTributacao = ''; 
     const el = document.querySelector(target.getAttribute('href'));
@@ -112,10 +115,18 @@
     }}>
         <div class="mb-5">
             <label class="font-bold">
+                <input type="checkbox" bind:checked={isSimpleMode} />
+                Modo Simplificado? Apenas nos diga em quanto tempo quer se aposentar, com qual valor e a taxa de juros de rendimento e calculamos o resto para você
+            </label>
+        </div>
+    {#if !isSimpleMode}    
+        <div class="mb-5">
+            <label class="font-bold">
                 <input type="checkbox" bind:checked={isPrevidencia} />
                 O fundo que você esta simulando é Previdência Privada?
             </label>
         </div>
+        
         
         {#if isPrevidencia}
         <p class="font-bold">Qual o plano da previdência?</p>
@@ -149,8 +160,12 @@
         
         <Input type='number'bind:value={initialInvestment} name='initialInvestment' label='Valor Inicial' placeholder='Digite o valor inicial' required />
         <Input type='number' bind:value={monthlyInvestment} name='monthlyInvestment' label='Aporte mensal' placeholder='Digite o valor mensal' required />
+    {:else}
+    <Input type='number' bind:value={retirement} name='retirement' label='Aposentadoria mensal' placeholder='Digite o valor mensal a receber' required />
+    {/if}
         <Input type='number' bind:value={yearlytax} name='yearlytax' mask='00,0000' label='Juros anual (Ex: 11.28)' placeholder='Taxa de juros anual ' required />
         <Input type='number' bind:value={period} name='period' mask='0000' label='Quantos anos? (para meses: 0.7 -> mes 7)' placeholder='Periodo do investimento' required />
+    {#if !isSimpleMode}
         <Input type='number' bind:value={brokerageFee} name='brokerageFee' mask='0,0000' label='Taxa de custodia anual (Opcional) (Ex: 0.7)' placeholder='Taxa de custodia do banco ou instituição financeira ' />
         {#if !isPrevidencia}
         <label class="font-bold">
@@ -158,6 +173,7 @@
             Seu investimento esta sujeito ao come cotas?(renda fixa, cambiais ou multimercados)
         </label>
         {/if}
+    {/if}    
         <div transition:fly={{
             delay: 700,
             duration: 2000
@@ -193,6 +209,12 @@
         delay: 200,
         duration: 300
     }}>
+    {#if isSimpleMode}
+        <div class="flex-auto w-full mt-5 md:w-24">
+            <p class="text-xl font-bold">Aporte mensal mínimo:</p>
+            <p class="lg:text-3xl text-xl text-green-500 font-bold">R$ {result.aporteMensais}</p>
+        </div>
+    {/if}    
         <div class="flex flex-wrap gap-4 mt-5">
             <div class="flex-auto w-full mt-5 md:w-24">
                 <p class="text-xl">Montante total final:</p>

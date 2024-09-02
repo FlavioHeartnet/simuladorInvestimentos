@@ -5,7 +5,10 @@ export function calculoAporteMensal(rendimentomensal: number, taxaJurosAnual: nu
     const periodoMeses = getMeses(periodoAnos).length;
     // ! Esta formula abaixo esta dando um valor menor do que o serio realmente o necessario para o montante futuro
     const depositomensal = rendimentomensal / ((1 + taxaJurosMensal)**periodoMeses)-1 ;//formula de aporte futuro FV*i/(1+i)**n - 1
-    return parseFloat(depositomensal.toFixed(2));
+    return {
+      depositoMensal: parseFloat(depositomensal.toFixed(2)),
+      montanteFuturo: montanteFuturo
+    }
 }
 
 export function obterMontanteFuturoNoTempo(aporteMensal: number, taxaJurosAnual: number, periodoAnos: number){
