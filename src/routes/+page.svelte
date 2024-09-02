@@ -210,7 +210,7 @@
         duration: 300
     }}>
     {#if isSimpleMode}
-        <div class="flex-auto w-full mt-5 md:w-24">
+        <div class="w-full mt-5">
             <p class="text-xl font-bold">Aporte mensal mínimo:</p>
             <p class="lg:text-3xl text-xl text-green-500 font-bold">R$ {result.aporteMensais}</p>
         </div>
