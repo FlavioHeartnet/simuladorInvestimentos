@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
 	import { fade, fly } from 'svelte/transition';
 	import { SimuladorInvestimentos } from '../api/main';
     import Input from './../components/input.svelte'
     import { IconMoneybag } from '@tabler/icons-svelte';
 	import { FirebaseConfig } from '../api/firebase';
+	import type { FullSimulationOutput } from '../api/types';
 	
     let initialInvestment = '';
     let monthlyInvestment = '';
@@ -20,10 +21,7 @@
     export let data;
     const firebaseInit = new FirebaseConfig(data.apiKey, data.authDomain, data.projectId,data.storageBucket,data.messagingSenderId, data.appId, data.measurementId);
     firebaseInit.logEvents
-    /**
-	 * @type {{ ""?: any; montante: string; rendimento: string; valorInvestido: string; montanteDepoisIR: string; valorRetidoIR?: string; aliquota: string; valorRetidoComeCotas: string; tabelaDetalhada?: { meses: string[]; montantes: string[]; rendimentosMensais: string[]; valoresInvestidos: string[]; }; jurosRealAliquotaAnual: string; rendimentoMensal: string; montanteDepoisIPCA: string; aporteMensais: string; }}
-	 */
-    let result;
+    let result: FullSimulationOutput;
      const handleSubmit = () => {
         const customSegments = {
             brokerageFee: brokerageFee,
@@ -47,9 +45,19 @@
             firebaseInit.logEvents("comecotas_provided", {segments: customSegments}); 
         }
 
-        const simulator = new SimuladorInvestimentos(parseFloat(initialInvestment),parseFloat(monthlyInvestment),parseFloat(yearlytax),parseFloat(period),parseFloat(brokerageFee),parseFloat(retirement), isComeCotas, selectedOptionPrevidencia, selectedOptionPrevidenciaTributacao)
+        const simulator = new SimuladorInvestimentos()
         try{
-            result = simulator.calcularJurosCompostos();
+            result = simulator.calcular({
+                valorInicial: parseFloat(initialInvestment),
+                aporteMensal: parseFloat(monthlyInvestment),
+                taxaJurosAnual: parseFloat(yearlytax),
+                periodoAnos: parseFloat(period),
+                taxacorretagemAnual: parseFloat(brokerageFee),
+                aposentadoria: parseFloat(retirement),
+                temComeCotas: isComeCotas,
+                previdencia: selectedOptionPrevidencia,
+                tributacaoPrevidencia: selectedOptionPrevidenciaTributacao
+            });
             isSuccess = true;
             firebaseInit.logEvents("simulation_successful", {segments: customSegments});
         }catch (e){
